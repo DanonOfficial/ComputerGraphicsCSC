@@ -1,0 +1,10 @@
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/build/CMakeFiles/rebuild_cache.dir
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/build/CMakeFiles/Task1.dir
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/build/CMakeFiles/edit_cache.dir
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/build/third-party/CMakeFiles/rebuild_cache.dir
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/build/third-party/CMakeFiles/edit_cache.dir
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/build/third-party/imgui_lib/CMakeFiles/rebuild_cache.dir
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/build/third-party/imgui_lib/CMakeFiles/imgui.dir
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/build/third-party/imgui_lib/CMakeFiles/edit_cache.dir
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/build/third-party/stb_image_lib/CMakeFiles/rebuild_cache.dir
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/build/third-party/stb_image_lib/CMakeFiles/edit_cache.dir

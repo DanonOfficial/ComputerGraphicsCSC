@@ -1,0 +1,120 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../third-party/imgui_lib/imgui/imconfig.h
+
+../third-party/imgui_lib/imgui/imgui.h
+imconfig.h
+../third-party/imgui_lib/imgui/imconfig.h
+float.h
+-
+stdarg.h
+-
+stddef.h
+-
+string.h
+-
+assert.h
+-
+stdint.h
+-
+imgui_user.h
+../third-party/imgui_lib/imgui/imgui_user.h
+
+../third-party/imgui_lib/imgui/imgui_impl_glfw.h
+
+../third-party/imgui_lib/imgui/imgui_impl_opengl3.h
+
+../third-party/stb_image_lib/stb_image/stb_image.h
+stb_image_lib.h
+../third-party/stb_image_lib/stb_image/stb_image_lib.h
+stdio.h
+-
+stdlib.h
+-
+stdarg.h
+-
+stddef.h
+-
+stdlib.h
+-
+string.h
+-
+limits.h
+-
+math.h
+-
+stdio.h
+-
+assert.h
+-
+stdint.h
+-
+emmintrin.h
+-
+intrin.h
+-
+arm_neon.h
+-
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/include/Fractal.h
+GL/glew.h
+-
+GLFW/glfw3.h
+-
+iostream
+-
+vector
+-
+imgui/imgui.h
+-
+imgui/imgui_impl_glfw.h
+-
+imgui/imgui_impl_opengl3.h
+-
+functional
+-
+stb_image.h
+-
+Shader.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/include/Shader.h
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/include/Shader.h
+cstdint
+-
+fstream
+-
+string
+-
+string_view
+-
+GL/glew.h
+-
+glm/glm.hpp
+-
+vector
+-
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/main.cpp
+GL/glew.h
+-
+GLFW/glfw3.h
+-
+include/Fractal.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/include/Fractal.h
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/src/Fractal.cpp
+../include/Fractal.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/include/Fractal.h
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/src/Shader.cpp
+../include/Shader.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/include/Shader.h
+iostream
+-
+

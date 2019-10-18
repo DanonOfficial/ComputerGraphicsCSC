@@ -1,0 +1,196 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imconfig.h
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui.cpp
+stb_image_lib.h
+-
+imgui.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui.h
+imgui_internal.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_internal.h
+ctype.h
+-
+stdio.h
+-
+stddef.h
+-
+stdint.h
+-
+imstb_sprintf.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imstb_sprintf.h
+Windows.h
+-
+windows.h
+-
+TargetConditionals.h
+-
+Carbon/Carbon.h
+-
+imm.h
+-
+imgui_user.inl
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_user.inl
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui.h
+imconfig.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imconfig.h
+float.h
+-
+stdarg.h
+-
+stddef.h
+-
+string.h
+-
+assert.h
+-
+stdint.h
+-
+imgui_user.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_user.h
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_demo.cpp
+imgui.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui.h
+ctype.h
+-
+limits.h
+-
+math.h
+-
+stdio.h
+-
+stdlib.h
+-
+stddef.h
+-
+stdint.h
+-
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_draw.cpp
+imgui.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui.h
+imgui_internal.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_internal.h
+stdio.h
+-
+alloca.h
+-
+malloc.h
+-
+stdlib.h
+-
+imstb_rectpack.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imstb_rectpack.h
+imstb_truetype.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imstb_truetype.h
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_impl_glfw.cpp
+imgui.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui.h
+imgui_impl_glfw.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_impl_glfw.h
+GLFW/glfw3.h
+-
+GLFW/glfw3native.h
+-
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_impl_glfw.h
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_impl_opengl3.cpp
+imgui.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui.h
+imgui_impl_opengl3.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_impl_opengl3.h
+stdio.h
+-
+stddef.h
+-
+stdint.h
+-
+TargetConditionals.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/TargetConditionals.h
+GLES2/gl2.h
+-
+OpenGLES/ES3/gl.h
+-
+GLES3/gl3.h
+-
+GL/glew.h
+-
+GL/glew.h
+-
+glad/glad.h
+-
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_impl_opengl3.h
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_internal.h
+stdio.h
+-
+stdlib.h
+-
+math.h
+-
+limits.h
+-
+imstb_textedit.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imstb_textedit.h
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_widgets.cpp
+imgui.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui.h
+imgui_internal.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imgui_internal.h
+ctype.h
+-
+stddef.h
+-
+stdint.h
+-
+imstb_textedit.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imstb_textedit.h
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imstb_rectpack.h
+stdlib.h
+-
+assert.h
+-
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imstb_textedit.h
+string.h
+-
+
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/imstb_truetype.h
+stb_truetype.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/stb_truetype.h
+stdio.h
+-
+stb_truetype.h
+/home/roundedglint585/Study/7 Semester/ComputerGraphicsCSC/Task1/third-party/imgui_lib/imgui/stb_truetype.h
+math.h
+-
+math.h
+-
+math.h
+-
+math.h
+-
+math.h
+-
+stdlib.h
+-
+assert.h
+-
+string.h
+-
+string.h
+-
+
