@@ -12,6 +12,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <vector>
+#include <glm/detail/type_quat.hpp>
 #include "Mesh.h"
 #include "Camera.h"
 
@@ -29,6 +30,7 @@ private:
     void callbackInitialization();
     void mouseDragCallback();
     void mouseButtonCallback(int button, int action);
+    glm::vec2 affineTransformToNDC(glm::vec2 vector);
 private:
     GLFWwindow *window_;
     uint32_t width_, height_;
@@ -36,6 +38,7 @@ private:
     Mesh currentMesh_;
     Camera camera_;
     glm::dvec2 mousePosition_;
+    glm::quat tranQuat_;
 };
 
 

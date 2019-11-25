@@ -8,9 +8,9 @@ uniform vec3 lightPos;
 uniform vec3 lightColor;
 
 float zNear = 0.1;
-float zFar  = 30.0;
+float zFar  = 20.0;
 
-float LinearizeDepth(float depth)
+float linearizeDepth(float depth)
 {
     float z = depth * 2.0 - 1.0;
     return (2.0 * zNear * zFar) / (zFar + zNear - z * (zFar - zNear));
@@ -29,6 +29,7 @@ void main()
     vec3 diffuse = diff * lightColor;
 
     vec3 result = (ambient+diffuse) * vec3(0.6f, 0.6f, 0.6f);
-    float depth = LinearizeDepth(gl_FragCoord.z) / zFar;
+    float depth = linearizeDepth(gl_FragCoord.z) / zFar;
     color = vec4(result, 1-depth);
+
 }
