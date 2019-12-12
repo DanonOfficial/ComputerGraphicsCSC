@@ -3,6 +3,9 @@
 //
 
 #include "../include/Fractal.h"
+#include "../include/shaders/FractalVertex.h"
+#include "../include/shaders/FractalFragment.h"
+#include "../include/textures/texure.h"
 
 glm::vec2 Fractal::affineTransformToNDC(glm::vec2 vector) {
     return {vector.x / width_ * 2.f - 1.f, (-vector.y / height_ + 1.f) * 2.f - 1.f};
@@ -16,6 +19,7 @@ void Fractal::glfwInitialization() {
     window_ = glfwCreateWindow(width_, height_, "Fractals", nullptr, nullptr);
     glfwMakeContextCurrent(window_);
     glViewport(0, 0, width_, height_);
+
 }
 
 void Fractal::callbackInitialization() {
@@ -86,14 +90,15 @@ void Fractal::loadTextures() {
     glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     int width, height, nrChannels;
-    unsigned char *data = stbi_load("textures/texture.png", &width, &height, &nrChannels, 0);
+    const char *data = reinterpret_cast<const char *>(stbi_load_from_memory(
+            reinterpret_cast<const stbi_uc *>(mainTexture),
+            (int) (mainTexture_length), &width, &height, &nrChannels, 0));
     if (data) {
         glTexImage1D(GL_TEXTURE_1D, 0, GL_RGB, width, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
     } else {
         std::cout << "Failed to load texture" << std::endl;
     }
 
-    stbi_image_free(data);
 }
 
 void Fractal::init() {
@@ -104,8 +109,7 @@ void Fractal::init() {
     imguiInitialization();
     loadVertices();
     loadTextures();
-
-    shader_ = Shader("shaders/FractalVertex.glsl", "shaders/FractalFragment.glsl");
+    shader_ = Shader(fractalVertexShader, fractalFragmentShader);
 }
 
 void Fractal::render() {
@@ -175,8 +179,6 @@ void Fractal::mouseScrollCallback(double yoffset) {
         scale_ += scaleFactor;
         center_ += aligmentVector;
     }
-
-
 }
 
 void Fractal::mouseButtonCallback(int button, int action) {
@@ -202,5 +204,5 @@ void Fractal::cursorPositionCallback() {
 void Fractal::framebufferSizeCallback(int width, int height) {
     width_ = width;
     height_ = height;
-    glViewport(0,0, width_, height_);
+    glViewport(0, 0, width_, height_);
 }

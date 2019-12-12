@@ -10,7 +10,6 @@ uniform int iter = 20;
 void main() {
     vec2 c = vec2((coord.x) * scale - center.x, (coord.y) * scale - center.y);
 
-
     int i = 0;
     vec2 z = c;
     for (; i < iter; i++) {
@@ -22,9 +21,6 @@ void main() {
     if(i == iter){
         gl_FragColor = texture1D(tex,0.0);
     }else{
-        gl_FragColor = texture1D(tex,i/255.0); // 255 is lenght of texture
+        gl_FragColor = texture1D(tex,i/255.0);
     }
-}
-
-// Подсосать текстуру
-
+} //Fractals
