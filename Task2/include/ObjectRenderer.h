@@ -20,7 +20,8 @@ class ObjectRenderer {
 public:
     ObjectRenderer(uint32_t width, uint32_t height);
     void init();
-    void loadObject(std::string_view path);
+    void loadObjectFromFile(std::string_view path);
+    void loadObjectFromData(const std::string &data);
     void run();
 private:
     void glfwInitialization();
@@ -30,15 +31,14 @@ private:
     void callbackInitialization();
     void mouseDragCallback();
     void mouseButtonCallback(int button, int action);
-    glm::vec2 affineTransformToNDC(glm::vec2 vector);
 private:
     GLFWwindow *window_;
     uint32_t width_, height_;
     Shader shader_;
     Mesh currentMesh_;
+    glm::vec2 prevPos, curPos;
     Camera camera_;
-    glm::dvec2 mousePosition_;
-    glm::quat tranQuat_;
+    bool isDragging = false;
 };
 
 

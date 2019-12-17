@@ -3439,7 +3439,7 @@ void ImGui::UpdateMouseWheel() {
     if (!window || window->Collapsed)
         return;
 
-    // Zoom / Scale window
+    // zoom / Scale window
     // FIXME-OBSOLETE: This is an old feature, it still works but pretty much nobody is using it and may be best redesigned.
     if (g.IO.MouseWheel != 0.0f && g.IO.KeyCtrl && g.IO.FontAllowUserScaling) {
         StartLockWheelingWindow(window);

@@ -1,29 +1,53 @@
-//
-// Created by roundedglint585 on 11/22/19.
-//
 
-#ifndef TASK2_CAMERA_H
-#define TASK2_CAMERA_H
-
-
+#pragma once
 
 #include <glm/glm.hpp>
 
 class Camera {
 public:
-    explicit Camera(glm::vec3 pos = {0.0f,1.0f,10.0f} , glm::vec3 up = {0.0f,1.0f,0.0f} );
-    [[nodiscard]] glm::mat4 getViewMatrix() const;
-    [[nodiscard]] glm::vec3 getPos() const;
-    void setPos(const glm::vec3 &pos);
+    Camera(float theta, float phi, float radius) : theta_(theta), phi_(phi), radius_(radius), up_(1.0f),
+                                                   target_(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)),
+                                                   view_((glm::mat4(1.f))), viewNeedsUpdate_(true) {
+    }
+
+    void rotate(float dTheta, float dPhi);
+
+    void zoom(float distance);
+
+    glm::vec4 getCameraPosition() const {
+        return target_ + transformToPolar();
+    }
+
+    glm::mat4 getView() {
+        if (viewNeedsUpdate_) {
+            updateViewMatrix();
+            viewNeedsUpdate_ = false;
+        }
+        return view_;
+    }
+
 
 private:
-    glm::vec3 transformToCartesian(const glm::vec3 &pos) const;
-    void update();
-    glm::vec3 worldUp_={0.f, 1.f, 0.f};
-    glm::vec3 pos_; // radius, theta(radians) and phi(radians)
-    glm::vec3 destination_; // radius, theta(radians) and phi(radians)
-    glm::vec3 up_;
-    glm::vec3 right_;
+    void updateViewMatrix();
+
+    [[nodiscard]] glm::vec4 transformToPolar() const {
+        float x = radius_ * sinf(phi_) * sinf(theta_);
+        float y = radius_ * cosf(phi_);
+        float z = radius_ * sinf(phi_) * cosf(theta_);
+        float w = 1.0f;
+        return glm::vec4(x, y, z, w);
+    }
+
+private:
+    float theta_;
+    float phi_;
+    float radius_;
+    float up_;
+
+    glm::vec4 target_;
+
+    glm::mat4 view_;
+
+    bool viewNeedsUpdate_;
 };
 
-#endif //TASK2_CAMERA_H

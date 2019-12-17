@@ -1,4 +1,4 @@
-#version 330 core
+#version 330
 out vec4 color;
 
 in vec3 normal;
@@ -32,4 +32,4 @@ void main()
     float depth = linearizeDepth(gl_FragCoord.z) / zFar;
     color = vec4(result, 1-depth);
 
-}
+}//

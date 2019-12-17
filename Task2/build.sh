@@ -12,5 +12,3 @@ cmake --build ./build
 
 
 cp build/Task2 bin/Task2
-cp -r shaders bin/shaders
-cp -r objects bin/objects

@@ -1,33 +1,51 @@
 
+#include <algorithm>
+#include <glm/ext/scalar_constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../include/Camera.h"
 
-Camera::Camera(glm::vec3 pos, glm::vec3 up) : pos_(pos),up_(up), destination_({0.0f,0.0f,0.0f}){
 
+float pi = 3.1415;
+
+void Camera::rotate(float dTheta, float dPhi) {
+    viewNeedsUpdate_ = true;
+
+    if (up_ > 0.0f) {
+        theta_ += dTheta;
+    } else {
+        theta_ -= dTheta;
+    }
+
+    phi_ += dPhi;
+    if (phi_ > 2.f * pi) {
+        phi_ -= 2.f * pi;
+    } else if (phi_ < -2.f * pi) {
+        phi_ += 2.f * pi;
+    }
+
+    if ((phi_ > 0 && phi_ < pi) || (phi_ < -pi && phi_ > -pi)) {
+        up_ = 1.0f;
+    } else {
+        up_ = -1.0f;
+    }
 }
 
-glm::mat4 Camera::getViewMatrix() const {
-    return glm::lookAt(pos_,glm::normalize(pos_ - destination_), glm::normalize(up_));
+void Camera::zoom(float distance) {
+    viewNeedsUpdate_ = true;
+
+    radius_ *= distance;
+
+    // Don't let the radius go negative
+    // If it does, re-project our target down the look vector
+    if (radius_ <= 0.0f) {
+        radius_ = 30.0f;
+        glm::vec4 look = glm::normalize(target_ - getCameraPosition());
+        target_ = (target_ + 30.f * look);
+    }
 }
 
-glm::vec3 Camera::getPos() const {
-    return pos_;
+
+void Camera::updateViewMatrix() {
+    view_ = glm::lookAt(glm::vec3(getCameraPosition()), glm::vec3(target_), {0.0f, up_, 0.0f});
 }
 
-
-
-glm::vec3 Camera::transformToCartesian(const glm::vec3 &pos) const {
-    return {pos.x*glm::sin(pos.y)*glm::cos(pos.z),
-            pos.x*glm::sin(pos.y)*glm::sin(pos.z),
-            pos.x*glm::cos(pos.y)};
-}
-
-void Camera::setPos(const glm::vec3 &pos) {
-    pos_ = pos;
-}
-
-void Camera::update() {
-
-    right_ = glm::normalize(glm::cross(glm::normalize(pos_ - destination_), worldUp_));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-    up_    = glm::normalize(glm::cross(right_, glm::normalize(pos_ - destination_)));
-}

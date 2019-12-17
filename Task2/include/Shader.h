@@ -15,7 +15,7 @@ class Shader {
 public:
     Shader() = default;
 
-    Shader(std::string_view vertexShaderPath, std::string_view fragmentShaderPath);
+    Shader(const std::string & vertexShaderData, const std::string & fragmentShaderData);
 
     void use() const;
 
@@ -46,9 +46,9 @@ public:
     void setMat4(std::string_view name, const glm::mat4 &mat) const;
 
 private:
-    uint32_t compileVertexShader(std::string_view vertexShaderPath);
+    uint32_t compileVertexShader(const std::string &vertexShaderData);
 
-    uint32_t compileFragmentShader(std::string_view fragmentShaderPath);
+    uint32_t compileFragmentShader(const std::string &fragmentShaderPath);
 
     void linkShader(uint32_t vertexShader, uint32_t fragmentShader);
 

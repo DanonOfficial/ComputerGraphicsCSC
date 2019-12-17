@@ -5,44 +5,12 @@
 #include "../include/ObjectRenderer.h"
 #include "../include/ObjParser.h"
 #include "../include/Camera.h"
+#include "../include/shaders/ObjectRenderVertex.h"
+#include "../include/shaders/ObjectRenderFragment.h"
 #include <glm/gtc/quaternion.hpp>
 
-namespace details {
-    glm::vec3 transformToSpherical(glm::vec3 pos) {
-        return {glm::sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z),
-                glm::acos(pos.z / glm::sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z)),
-                glm::atan(pos.y, pos.x)};
-    }
 
-    glm::vec3 transformToCartesian(glm::vec3 pos) {
-        return {pos.x * glm::sin(pos.y) * glm::cos(pos.z),
-                pos.x * glm::sin(pos.y) * glm::sin(pos.z),
-                pos.x * glm::cos(pos.y)
-        };
-    }
-
-    glm::vec3 translateFromNDCtoArcball(glm::vec2 pos) {
-        float dot = pos.x * pos.x + pos.y * pos.y;
-        glm::vec3 result = {pos, 0};
-        if (dot <= 1.0f) {
-            result.z = glm::sqrt(1.0f - dot);
-        } else {
-            result = glm::normalize(result);
-        }
-        return result;
-    }
-
-    glm::quat transformQuatFromTo(glm::vec3 from, glm::vec3 to) {
-        glm::quat q;
-        q.x = from.y * to.z - from.z * to.y;
-        q.y = from.z * to.x - from.x * to.z;
-        q.z = from.x * to.y - from.y * to.x;
-        q.w = from.x * to.x + from.y * to.y + from.z * to.z;
-        return q;
-    }
-}
-
-ObjectRenderer::ObjectRenderer(uint32_t width, uint32_t height) : width_(width), height_(height), window_(nullptr) {
+ObjectRenderer::ObjectRenderer(uint32_t width, uint32_t height) : width_(width), height_(height), window_(nullptr), camera_(20.f, 1.f, 5.f){
 
 }
 
@@ -50,14 +18,18 @@ void ObjectRenderer::init() {
     glfwInitialization();
     glewInit();
     shaderInitialization();
-    camera_ = Camera({0.0f, 0.0f, 5.f});
     callbackInitialization();
 }
 
-void ObjectRenderer::loadObject(std::string_view path) {
-    auto teapot = objParser::parseFile(path);
-    currentMesh_ = Mesh(std::get<1>(teapot), std::get<0>(teapot));
+void ObjectRenderer::loadObjectFromFile(std::string_view path) {
+    auto cube = objParser::parseFile(path);
+    currentMesh_ = Mesh(std::get<1>(cube), std::get<0>(cube));
 }
+void ObjectRenderer::loadObjectFromData(const std::string &data) {
+    auto cube = objParser::parseData(data);
+    currentMesh_ = Mesh(std::get<1>(cube), std::get<0>(cube));
+}
+
 
 void ObjectRenderer::glfwInitialization() {
     glfwInit();
@@ -74,18 +46,18 @@ void ObjectRenderer::run() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    glm::mat4 model = glm::mat4(1.0f);
     while (!glfwWindowShouldClose(window_)) {
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glm::mat4 view = camera_.getViewMatrix();
+        glm::mat4 view_ = camera_.getView();
+        glm::mat4 model = glm::mat4(1.0f);
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float) width_ / (float) height_, 0.1f, 100.0f);
         shader_.use();
         shader_.setMat4("model", model);
-        shader_.setMat4("view", view);
+        shader_.setMat4("view", view_ );
         shader_.setMat4("projection", projection);
         shader_.setVec3("lightColor", {1.0f, 1.0f, 1.0f});
-        shader_.setVec3("lightPos", camera_.getPos());
+        shader_.setVec3("lightPos", {4.f, 4.f, 6.f});
         currentMesh_.draw(shader_);
         glfwSwapBuffers(window_);
         glfwPollEvents();
@@ -93,21 +65,14 @@ void ObjectRenderer::run() {
 }
 
 void ObjectRenderer::shaderInitialization() {
-    shader_ = Shader("shaders/ObjectRenderVertex.glsl", "shaders/ObjectRenderFragment.glsl");
+    shader_ = Shader(objectRenderVertex, objectRenderFragment);
 }
 
 void ObjectRenderer::mouseScrollCallback(double yOffset) {
-    glm::dvec2 mousePos;
-    glfwGetCursorPos(window_, &mousePos.x, &mousePos.y);
-    glm::vec3 sphericalCoords = details::transformToSpherical(camera_.getPos());
     if (yOffset == -1) {
-        glm::vec3 updated = camera_.getPos();
-        sphericalCoords.x *= 1.1;
-        camera_.setPos(details::transformToCartesian(sphericalCoords));
+        camera_.zoom(1.1);
     } else {
-        glm::vec3 updated = camera_.getPos();
-        sphericalCoords.x *= 0.9;
-        camera_.setPos(details::transformToCartesian(sphericalCoords));
+        camera_.zoom(0.9);
     }
 }
 
@@ -144,30 +109,28 @@ void ObjectRenderer::framebufferSizeCallback(int width, int height) {
 
 
 void ObjectRenderer::mouseDragCallback() {
-    int state = glfwGetMouseButton(window_, GLFW_MOUSE_BUTTON_LEFT);
-    if (state == GLFW_PRESS) {
-        glm::dvec2 mousePos;
-        glfwGetCursorPos(window_, &mousePos.x, &mousePos.y);
-        glm::vec3 spherical = camera_.getPos();
-        glm::quat tr = details::transformQuatFromTo(
-                details::translateFromNDCtoArcball(affineTransformToNDC(mousePosition_)),
-                details::translateFromNDCtoArcball(affineTransformToNDC(mousePos)));
-
-        glm::mat4 translate = glm::mat4_cast(tr);
-        glm::vec4 pos = {camera_.getPos(), 1.f};
-        pos = pos * translate;
-        camera_.setPos({pos.x, pos.y, pos.z});
-        mousePosition_ = mousePos;
+    double x,y;
+    glfwGetCursorPos(window_, &x, &y);
+    if(isDragging){
+        prevPos = curPos;
+        curPos = {x,y};
+        auto temp = -(curPos - prevPos)/300.f;
+        camera_.rotate(temp.x, temp.y);
     }
+
 }
 
 void ObjectRenderer::mouseButtonCallback(int button, int action) {
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        glfwGetCursorPos(window_, &mousePosition_.x, &mousePosition_.y);
-        tranQuat_ = {1.0f, 0.0f, 0.0f, 0.f};
+    double x,y;
+    glfwGetCursorPos(window_, &x, &y);
+
+    if(((action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT))){
+        isDragging = true;
+        curPos = {x,y};
+        prevPos = {x,y};
+    }else{
+        isDragging = false;
     }
+
 }
 
-glm::vec2 ObjectRenderer::affineTransformToNDC(glm::vec2 vector) {
-    return {vector.x / width_ * 2.f - 1.f, (-vector.y / height_ + 1.f) * 2.f - 1.f};
-}

@@ -9,7 +9,7 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glm REQUIRED)
 
-add_executable(Task1 main.cpp src/Shader.cpp include/Shader.h src/Fractal.cpp include/Fractal.h)
+add_executable(Task1 main.cpp src/Shader.cpp include/Shader.h src/Fractal.cpp include/Fractal.h ../Task2/third-party/hexdumparray_lib/hexdumparray/hexdumparray.cpp)
 
 # Adding GLFW3
 target_include_directories(Task1 PRIVATE ${OPENGL_INCLUDE_DIR})
