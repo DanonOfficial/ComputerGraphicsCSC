@@ -17,7 +17,7 @@ void Camera::rotate(float dTheta, float dPhi) {
     phi_ += dPhi;
     if (phi_ > 2.f * glm::pi<float>()) {
         phi_ -= 2.f *  glm::pi<float>();
-    } else if (phi_ < -2.f * pi) {
+    } else if (phi_ < -2.f * glm::pi<float>()) {
         phi_ += 2.f *  glm::pi<float>();
     }
 
