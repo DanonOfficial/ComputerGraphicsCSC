@@ -12,7 +12,9 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <vector>
-#include <glm/detail/type_quat.hpp>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
 #include "Mesh.h"
 #include "Camera.h"
 
@@ -31,6 +33,8 @@ private:
     void callbackInitialization();
     void mouseDragCallback();
     void mouseButtonCallback(int button, int action);
+    void imguiInitialization();
+    void renderGUI();
 private:
     GLFWwindow *window_;
     uint32_t width_, height_;
@@ -39,6 +43,7 @@ private:
     glm::vec2 prevPos, curPos;
     Camera camera_;
     bool isDragging = false;
+    float dissolveThreshold_;
 };
 
 

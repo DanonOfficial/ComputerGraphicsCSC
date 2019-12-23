@@ -7,10 +7,9 @@
 #include "../include/Camera.h"
 #include "../include/shaders/ObjectRenderVertex.h"
 #include "../include/shaders/ObjectRenderFragment.h"
-#include <glm/gtc/quaternion.hpp>
 
 
-ObjectRenderer::ObjectRenderer(uint32_t width, uint32_t height) : width_(width), height_(height), window_(nullptr), camera_(20.f, 1.f, 5.f){
+ObjectRenderer::ObjectRenderer(uint32_t width, uint32_t height) : width_(width), height_(height), window_(nullptr), camera_(20.f, 1.f, 5.f), dissolveThreshold_(0.0f){
 
 }
 
@@ -19,6 +18,7 @@ void ObjectRenderer::init() {
     glewInit();
     shaderInitialization();
     callbackInitialization();
+    imguiInitialization();
 }
 
 void ObjectRenderer::loadObjectFromFile(std::string_view path) {
@@ -29,7 +29,14 @@ void ObjectRenderer::loadObjectFromData(const std::string &data) {
     auto cube = objParser::parseData(data);
     currentMesh_ = Mesh(std::get<1>(cube), std::get<0>(cube));
 }
-
+void ObjectRenderer::imguiInitialization() {
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO();
+    ImGui_ImplGlfw_InitForOpenGL(window_, true);
+    ImGui_ImplOpenGL3_Init();
+    ImGui::StyleColorsDark();
+}
 
 void ObjectRenderer::glfwInitialization() {
     glfwInit();
@@ -40,7 +47,20 @@ void ObjectRenderer::glfwInitialization() {
     glfwMakeContextCurrent(window_);
     glViewport(0, 0, width_, height_);
 }
+void ObjectRenderer::renderGUI() {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+    // GUI
+    ImGui::Begin("Dissolve window");
+    ImGui::SliderFloat("Threshold Count", &dissolveThreshold_, 0.f, 1.f);
+    ImGui::End();
 
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+
+}
 void ObjectRenderer::run() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -58,7 +78,9 @@ void ObjectRenderer::run() {
         shader_.setMat4("projection", projection);
         shader_.setVec3("lightColor", {1.0f, 1.0f, 1.0f});
         shader_.setVec3("lightPos", {4.f, 4.f, 6.f});
+        shader_.setFloat("threshold", dissolveThreshold_);
         currentMesh_.draw(shader_);
+        renderGUI();
         glfwSwapBuffers(window_);
         glfwPollEvents();
     }
@@ -66,6 +88,7 @@ void ObjectRenderer::run() {
 
 void ObjectRenderer::shaderInitialization() {
     shader_ = Shader(objectRenderVertex, objectRenderFragment);
+    std::cout << (char*) objectRenderFragment;
 }
 
 void ObjectRenderer::mouseScrollCallback(double yOffset) {
@@ -111,7 +134,7 @@ void ObjectRenderer::framebufferSizeCallback(int width, int height) {
 void ObjectRenderer::mouseDragCallback() {
     double x,y;
     glfwGetCursorPos(window_, &x, &y);
-    if(isDragging){
+    if(isDragging && !ImGui::IsAnyItemActive()){
         prevPos = curPos;
         curPos = {x,y};
         auto temp = -(curPos - prevPos)/300.f;
@@ -124,7 +147,7 @@ void ObjectRenderer::mouseButtonCallback(int button, int action) {
     double x,y;
     glfwGetCursorPos(window_, &x, &y);
 
-    if(((action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT))){
+    if(((action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT ))){
         isDragging = true;
         curPos = {x,y};
         prevPos = {x,y};

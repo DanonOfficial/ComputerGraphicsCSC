@@ -5,7 +5,7 @@
 #ifndef OPENGL_MESH_H
 #define OPENGL_MESH_H
 
-#include <glm/glm.hpp>
+#include <glm_lib/glm/glm.hpp>
 #include <vector>
 #include <GL/glew.h>
 #include <cstddef>
@@ -16,6 +16,7 @@ public:
     struct Vertex {
         glm::vec3 position;
         glm::vec3 normal;
+        glm::vec2 texture;
     };
 
 public:

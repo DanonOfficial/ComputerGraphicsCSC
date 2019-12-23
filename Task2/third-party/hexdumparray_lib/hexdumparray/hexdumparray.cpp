@@ -25,7 +25,7 @@ int main(int argc, char **argv)
     fout << std::endl;
     fout << "static const char " << arrayName << "[] = {" << std::endl;
 
-    char buffer[2391];
+    char buffer[128];
     const int maxBytesInLine = 120 / 6;
     int bytesInLine = 0;
 

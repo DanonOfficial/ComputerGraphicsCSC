@@ -32,6 +32,9 @@ void Mesh::initMesh() {
         // vertex normals
         glEnableVertexAttribArray(i+1);
         glVertexAttribPointer(i + 1, 3, GL_FLOAT, GL_FALSE, morphPositionCount*sizeof(Vertex), (void *) (sizeof(Vertex)*i+ offsetof(Vertex, normal)));
+        // vertex texture
+        glEnableVertexAttribArray(i+2);
+        glVertexAttribPointer(i + 2, 2, GL_FLOAT, GL_FALSE, morphPositionCount*sizeof(Vertex), (void *) (sizeof(Vertex)*i+ offsetof(Vertex, texture)));
     }
     glBindVertexArray(0);
 

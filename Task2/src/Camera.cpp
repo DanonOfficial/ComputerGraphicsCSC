@@ -1,6 +1,6 @@
 
-#include <glm/ext/scalar_constants.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm_lib/glm/ext/scalar_constants.hpp>
+#include <glm_lib/glm/gtc/matrix_transform.hpp>
 #include "../include/Camera.h"
 
 

@@ -8,7 +8,7 @@
 #include <string>
 #include <string_view>
 #include <GL/glew.h>
-#include <glm/glm.hpp>
+#include <glm_lib/glm/glm.hpp>
 #include <vector>
 
 class Shader {

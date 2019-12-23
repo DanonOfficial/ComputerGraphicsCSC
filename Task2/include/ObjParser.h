@@ -8,17 +8,17 @@
 #include <tuple>
 #include <cstdint>
 #include <unordered_map>
-#include <glm/gtx/hash.hpp>
+#include <glm_lib/glm/gtx/hash.hpp>
 #include "Mesh.h"
 
 namespace objParser {
     namespace details {
         std::array<std::vector<uint32_t>, 3> parseFaceString(std::string_view str) {
-            std::array<std::vector<uint32_t>, 3> result = {}; // vertexIndex/textureIndex/normalIndex
+            std::array<std::vector<uint32_t>, 3> result = {}; // vertexIndex/normalIndex/textureIndex
             enum typeOfIndex {
                 vertexIndex,
+                normalIndex,
                 textureIndex,
-                normalIndex
             };
             std::string num;
             uint32_t type = 0;
@@ -55,20 +55,21 @@ namespace objParser {
         template<class T> class PairHash;
 
         template<>
-        class PairHash<std::pair<glm::vec3, glm::vec3>> {
+        class PairHash<std::tuple<glm::vec3, glm::vec3, glm::vec2>> {
         public:
-            size_t operator()(const std::pair<glm::vec3, glm::vec3> &pair) const {
-                size_t h1 = std::hash<float>{}(pair.first.x);
-                size_t h2 = std::hash<float>{}(pair.second.x);
+            size_t operator()(const std::tuple<glm::vec3, glm::vec3, glm::vec2> &tuple) const {
+                size_t h1 = std::hash<float>{}(std::get<0>(tuple).x);
+                size_t h2 = std::hash<float>{}(std::get<1>(tuple).x);
                 return h1 ^ (h2 << 1u);
             }
         };
         template<typename Stream>
         [[nodiscard]] inline std::tuple<std::vector<Mesh::Vertex>, std::vector<uint32_t>> getFromStream(Stream &&data){
             std::vector<glm::vec3> vertices, normals;
-            std::vector<std::pair<glm::vec3, glm::vec3>> preMeshVertex;
+            std::vector<glm::vec2> textures;
+            std::vector<std::tuple<glm::vec3, glm::vec3, glm::vec2>> preMeshVertex;
             std::vector<uint32_t> indices = {};
-            std::unordered_map<std::pair<glm::vec3, glm::vec3>, uint32_t, details::PairHash<std::pair<glm::vec3,glm::vec3>>> fromDataToIndex;
+            std::unordered_map<std::tuple<glm::vec3, glm::vec3, glm::vec2>, uint32_t, details::PairHash<std::tuple<glm::vec3,glm::vec3, glm::vec2>>> fromDataToIndex;
 
             std::string token;
             while (data >> token) {
@@ -85,15 +86,16 @@ namespace objParser {
                     std::getline(data, toParse);
                     auto result = details::parseFaceString(toParse);
                     std::vector<uint32_t> parsedVertices = result[0];
-                    std::vector<uint32_t> parsedNormals = result[2];
+                    std::vector<uint32_t> parsedNormals = result[1];
+                    std::vector<uint32_t> parsedTextures = result[2];
                     auto findOrInsertPair = [&](uint32_t index){
                         auto possibleIndex = fromDataToIndex.find(
-                                {vertices[parsedVertices[index] - 1], normals[parsedNormals[index] - 1]});
+                                {vertices[parsedVertices[index] - 1], normals[parsedNormals[index] - 1], textures[parsedTextures[index]-1]});
                         if (possibleIndex == fromDataToIndex.end()) {
-                            fromDataToIndex.insert({{vertices[parsedVertices[index] - 1], normals[parsedNormals[index] - 1]},
+                            fromDataToIndex.insert({{vertices[parsedVertices[index] - 1], normals[parsedNormals[index] - 1], textures[parsedTextures[index]-1]},
                                                     preMeshVertex.size()});
                             indices.emplace_back(preMeshVertex.size());
-                            preMeshVertex.emplace_back(vertices[parsedVertices[index] - 1], normals[parsedNormals[index] - 1]);
+                            preMeshVertex.emplace_back(vertices[parsedVertices[index] - 1], normals[parsedNormals[index] - 1], textures[parsedTextures[index]-1]);
 
                         } else {
                             indices.emplace_back((*possibleIndex).second);
@@ -108,7 +110,9 @@ namespace objParser {
                         findOrInsertPair(3);
                     }
                 } else if (token == "vt") {
-                    continue; //todo: ad textures
+                    float x, y;
+                    data >> x >> y;
+                    textures.emplace_back(x, y);
                 } else if (token == "usemtl") {
                     continue; //todo: add materials
                 } else if (token == "mtllib") {
@@ -124,7 +128,7 @@ namespace objParser {
 
             std::vector<Mesh::Vertex> verticesResult(preMeshVertex.size());
             for (size_t i = 0; i < preMeshVertex.size(); i++) {
-                verticesResult[i] = {preMeshVertex[i].first, preMeshVertex[i].second};
+                verticesResult[i] = {std::get<0>(preMeshVertex[i]), std::get<1>(preMeshVertex[i]), std::get<2>(preMeshVertex[i])};
             }
             return std::make_tuple(verticesResult, indices);
         }
