@@ -11,4 +11,4 @@ cd ..
 cmake --build ./build
 
 
-cp build/Task2 bin/Task2
+cp build/Task3 bin/Task3

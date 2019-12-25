@@ -17,7 +17,7 @@ find_package(GLEW REQUIRED)
 
 
 add_executable(Task3 main.cpp src/Shader.cpp  include/Shader.h src/ObjectRenderer.cpp include/ObjectRenderer.h include/ObjParser.h src/Mesh.cpp include/Mesh.h
-        include/shaders/ObjectRenderFragment.h include/shaders/ObjectRenderVertex.h include/shaders/ParticlesFragment.h include/shaders/ParticlesVertex.h include/objects/cube.h include/FreeCamera.h src/FreeCamera.cpp
+        include/shaders/ObjectRenderFragment.h include/shaders/ObjectRenderVertex.h include/shaders/ParticlesFragment.h include/shaders/ParticlesVertex.h include/objects/sponza.h include/FreeCamera.h src/FreeCamera.cpp
         include/Particle.h include/ParticlesEmmiter.h src/ParticlesEmmiter.cpp )
 
 # Adding GLFW3

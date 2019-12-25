@@ -4,7 +4,6 @@
 
 #include "../include/ObjectRenderer.h"
 #include "../include/ObjParser.h"
-#include "../include/TrackballCamera.h"
 #include "../include/shaders/ObjectRenderVertex.h"
 #include "../include/shaders/ObjectRenderFragment.h"
 #include "../include/shaders/ParticlesFragment.h"
@@ -95,7 +94,7 @@ void ObjectRenderer::run() {
         for(auto &i: emmiters_){
             i.render(particlesShader_, camera_.getPosition(), delta);
         }
-        renderGUI();
+        //renderGUI();
         glfwSwapBuffers(window_);
         glfwPollEvents();
     }
